@@ -1,0 +1,6 @@
+{
+  "name": "Nelna Pomodoro",
+  "description": "An interactive Pomodoro timer with a realistic dial overlay inspired by the Nelna analog timer.",
+  "requestFramePermissions": ["screen-wake-lock"],
+  "majorCapabilities": []
+}
