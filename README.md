@@ -1,20 +1,146 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# 🍅 Nelna Pomodoro (넬나 뽀모도로 타이머)
 
-# Run and deploy your AI Studio app
+> **아날로그 넬나 타이머의 직관적인 다이얼 게이지를 현대적이고 미니멀한 디지털 인터페이스로 재해석한 고성능 뽀모도로 타이머**
 
-This contains everything you need to run your app locally.
+Nelna Pomodoro는 군더더기 없는 미니멀한 디자인과 정밀한 타이머 엔진, 풍부한 시각/청각/촉각 피드백을 결합하여 사용자가 최상의 몰입(Deep Work) 상태를 유지할 수 있도록 설계된 웹 애플리케이션입니다.
 
-View your app in AI Studio: https://ai.studio/apps/31d2c21e-6e30-4fda-addf-f4a53b07eb74
+---
 
-## Run Locally
+## 🌟 주요 특징 (Key Features)
 
-**Prerequisites:**  Node.js
+### 1. 🕒 현실적인 아날로그 다이얼 & 직관적인 게이지
+- **부드러운 360° 원형 다이얼**: 남은 시간에 비례하여 직관적으로 줄어드는 시각적 다이얼 게이지를 제공합니다.
+- **몰입형 상태 전환**: 집중(Focus), 짧은 휴식(Short Break), 긴 휴식(Long Break) 상태에 따라 배경과 다이얼 테마가 자연스럽게 전환됩니다.
+- **세션 인디케이터**: 현재 라운드의 진행 상황(예: `1/4`, `2/4`)을 한눈에 확인할 수 있습니다.
 
+### 2. 🪟 Document Picture-in-Picture (PiP) 미니 플레이어
+- **Always-on-Top 부유창**: 다른 앱(코딩 에디터, 문서 작성기, 디자인 툴 등)을 전체 화면으로 사용하면서도 화면 구석에 타이머를 띄워두고 작업할 수 있습니다.
+- **3가지 맞춤형 미니 플레이어 스타일**:
+  - **퓨어 다이얼 (Pure Dial)**: 시간 숫자 없이 오직 다이얼 링의 아름다운 궤적만 보여주는 극도의 미니멀 스타일
+  - **미니멀 정보 (Minimal Info)**: 숫자 타이머와 직관적인 최소 조작 인터페이스
+  - **클래식 카드 (Classic Card)**: 세션 진행 바와 상태 정보가 정돈된 카드 레이아웃
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+### 3. ⚙️ 안정적인 백그라운드 구동 & 정밀도 보장
+- **Web Worker 기반 타이머 (`timerWorker.ts`)**: 브라우저 탭이 백그라운드로 전환되거나 절전 모드로 스로틀링되어도 오차 없이 정확한 초 단위 틱을 유지합니다.
+- **Screen Wake Lock API**: 타이머 동작 중 화면이 저절로 꺼지거나 잠기지 않도록 방지합니다.
+- **절전 방지 킵얼라이브 (Silent Keep-alive)**: 모바일/데스크톱 브라우저 환경에서 오디오 및 비디오 컨텍스트를 활용하여 백그라운드 수면 상태를 방어합니다.
+- **스마트 시간 보정 & 지속성**: 브라우저를 닫거나 새로고침해도 `LocalStorage` 및 타임스탬프(`Date.now()`) 기반으로 직전 상태와 진행 시간을 완벽하게 복원합니다.
+
+### 4. 🔔 Web Audio API 기반의 합성 사운드 시스템
+외부 오디오 파일 로딩 없이 브라우저 자체 Web Audio API 오실레이터로 실시간 합성되는 10종의 맑고 감각적인 알림음을 지원합니다.
+
+| 카테고리 | 알림음 이름 | 특징 |
+| :--- | :--- | :--- |
+| **자연 & 젠** | **크리스탈 차임 (Crystal Chime)** | 맑고 투명한 유리 종소리의 영롱한 화음 |
+| | **소프트 젠 징 (Soft Zen Gong)** | 마음을 차분하게 가라앉히는 깊고 부드러운 명상 징 소리 |
+| | **숲속 새소리 (Nature Bird)** | 자연 속에 있는 듯한 산뜻한 새 지저귐 |
+| **아날로그 & 텍스처** | **우든 블록 (Wooden Block)** | 또렷하게 인지되는 3연타 리드미컬 목탁/블록 타격음 |
+| | **기계식 클릭 (Mechanical Click)** | 놓치지 않는 4연타 래칫 기계식 클릭 사운드 |
+| | **빈티지 타자기 (Vintage Typewriter)** | 타자기 활자 타건음과 경쾌한 3연타 벨소리 |
+| **클래식** | **심플 비프 (Simple Beep)** | 풍부한 볼륨과 상승 3단 톤으로 명확한 청음성을 갖춘 알림 |
+| | **부드러운 차임 (Soft Chime)** | 귀를 자극하지 않는 부드러운 듀얼 톤 |
+| | **디지털 알림음 (Digital Alert)** | 세련된 전자식 3화음 알림 |
+| **무음** | **무음 (Silent)** | 도서관, 독서실 등 조용한 환경을 위한 완전 무음 모드 |
+
+- **세션별 개별 알림음 설정**: 집중 종료, 짧은 휴식 종료, 긴 휴식 종료 각각에 서로 다른 알림음을 지정할 수 있습니다.
+- **마스터 볼륨 및 실시간 미리듣기**: 슬라이더를 통해 볼륨을 섬세하게 조절하고 즉시 들어볼 수 있습니다.
+
+### 5. 📳 다감각 무음 피드백 (Silent Feedback)
+소리를 켜지 못하는 환경에서도 작업 흐름을 끊지 않고 세션 종료를 인지할 수 있습니다.
+- **시각적 배경 전환**: 모드 변경 시 매끄러운 그라데이션 전환 효과
+- **햅틱 진동 (Haptic Feedback)**: 지원 기기(스마트폰/태블릿)에서 세션 종료 시 물리적 진동 알림
+- **화면 플래시 효과 (Flash Effect)**: 화면 가장자리가 부드럽게 반짝이는 시각적 신호
+
+### 6. 🎮 직관적인 리셋 & 사이클 제어
+- **1회 클릭**: 현재 세션만 처음 시간으로 되돌립니다.
+- **더블 클릭**: 전체 세션 스택을 초기화하여 첫 번째 세션으로 리셋합니다.
+- **자동 시작(Auto-start)**: 세션이 끝나면 다음 단계(집중 ↔ 휴식)로 자동 진행 여부를 켜고 끌 수 있습니다.
+
+### 7. 🌓 다크 모드 & 다국어(i18n) 지원
+- **테마 모드**: 라이트(Light), 다크(Dark), 시스템 연동(System) 지원. 다크 모드 환경에서도 눈이 편안한 고대비 타이포그래피와 블러 글래스모피즘이 적용되었습니다.
+- **고급 설정 다국어 지원**: 고급 설정(Advanced Settings) 패널에서 **한국어(KO)**와 **English(EN)** 간 언어를 즉시 전환할 수 있습니다.
+- **빠른 프리셋**: 기본(25분/5분), 몰입(50분/10분), 라이트(15분/3분) 프리셋을 단 한 번의 클릭으로 적용할 수 있습니다.
+- **스마트 초 단위 표시**: 평소에는 분 단위로 미니멀하게 표시하다가, 남은 시간이 1분 미만일 때만 초 단위를 표시하는 스마트 디스플레이 옵션.
+
+---
+
+## 🛠 기술 스택 (Tech Stack)
+
+- **Core Framework**: React 19, TypeScript
+- **Build Tool**: Vite 6
+- **Styling**: Tailwind CSS v4, Glassmorphism UI
+- **Animations**: Motion (Framer Motion)
+- **Icons**: Lucide React
+- **Audio Synthesis**: Web Audio API (No external mp3/wav files required)
+- **Background Synchronization**: Web Workers, Screen Wake Lock API, Document Picture-in-Picture API
+
+---
+
+## 📁 프로젝트 구조 (Project Structure)
+
+```text
+nelna-pomodoro/
+├── public/                 # 정적 리소스
+├── src/
+│   ├── workers/
+│   │   └── timerWorker.ts  # 백그라운드 타이머 정밀 제어 Web Worker
+│   ├── App.tsx             # 메인 앱, 아날로그 다이얼, 오디오 신디사이저, 설정 및 PiP
+│   ├── index.css           # 글로벌 CSS 및 Tailwind 통합 스타일
+│   └── main.tsx            # React 애플리케이션 엔트리포인트
+├── DESIGN.md               # 디자인 시스템 및 컬러 팔레트 명세
+├── index.html              # HTML 템플릿 및 메타태그
+├── metadata.json           # 앱 메타데이터 및 권한 정의
+├── package.json            # 종속성 및 실행 스크립트
+├── tsconfig.json           # TypeScript 설정
+└── vite.config.ts          # Vite 번들러 설정
+```
+
+---
+
+## 🚀 시작 가이드 (Getting Started)
+
+### 필수 요구사항
+- Node.js 18.0.0 이상
+- npm 또는 yarn / pnpm
+
+### 설치 및 로컬 실행
+
+1. **저장소 클론 및 종속성 설치**:
+   ```bash
+   npm install
+   ```
+
+2. **개발 서버 실행**:
+   ```bash
+   npm run dev
+   ```
+   브라우저에서 `http://localhost:3000`으로 접속하여 타이머를 사용할 수 있습니다.
+
+3. **프로덕션 빌드**:
+   ```bash
+   npm run build
+   ```
+
+4. **빌드 결과물 미리보기**:
+   ```bash
+   npm run preview
+   ```
+
+5. **타입 검사 (Lint)**:
+   ```bash
+   npm run lint
+   ```
+
+---
+
+## 💡 브라우저 권한 및 기능 안내
+
+- **Document Picture-in-Picture**: Chrome/Edge 최신 버전에서 별도 팝업 창 형태의 Always-on-Top 미니 플레이어가 지원됩니다.
+- **화면 켜짐 유지 (Screen Wake Lock)**: 기기의 자동 화면 꺼짐을 막기 위해 브라우저 Wake Lock 권한을 활용합니다.
+- **자동 재생 정책 (AudioContext)**: 브라우저 보안 정책에 따라 타이머 첫 시작 또는 화면 클릭 인터랙션 후 오디오가 정상 작동합니다.
+
+---
+
+## 📄 라이선스 (License)
+
+Apache-2.0 License. 자유롭게 사용, 수정, 배포할 수 있습니다.
