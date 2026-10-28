@@ -8,3 +8,4 @@ coverage/
 !.env.example
 firebase.txt
 .firebase/
+docs/security/
